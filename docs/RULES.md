@@ -103,7 +103,7 @@ Standards and constraints that govern how this project is built and maintained. 
 ### 5.3 Pull requests
 - Every PR must reference a user story ID in the description (e.g. "Implements SE-01")
 - PRs touching workflow files require a manual test: open a real issue and confirm the expected behavior before merging
-- No self-merges — in a solo project, use a 24-hour cooling-off period before merging your own PR
+- No self-merges — in a solo project, a 24-hour cooling-off period is recommended before merging your own PR, but this is suspended during active development sprints
 
 ---
 
