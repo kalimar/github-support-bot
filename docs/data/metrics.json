@@ -1,0 +1,14 @@
+{
+  "generated_at": null,
+  "period_days": 30,
+  "summary": {
+    "total_open": 0,
+    "closed_30d": 0,
+    "auto_resolved_30d": 0,
+    "escalated_30d": 0,
+    "sla_breached": 0
+  },
+  "avg_first_response_hours": null,
+  "label_distribution": {},
+  "sla_breached_issues": []
+}

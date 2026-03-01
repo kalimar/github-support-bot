@@ -1,0 +1,46 @@
+# What it does: Fetches issue data from the GitHub API, computes support metrics, and commits the result to docs/data/metrics.json for the dashboard.
+# When it runs: Daily at 06:00 UTC, or manually via workflow_dispatch.
+# Permissions: issues:read (fetch issue data), contents:write (commit metrics.json).
+
+name: Collect Metrics
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  collect:
+    name: Collect and commit metrics
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: collect-metrics
+      cancel-in-progress: false
+    permissions:
+      issues: read
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: '20'
+
+      - name: Collect metrics
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          OUTPUT_PATH: docs/data/metrics.json
+        run: node src/collect-metrics.js
+
+      - name: Commit metrics
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add docs/data/metrics.json
+          git diff --staged --quiet || git commit -m "chore(dashboard): update metrics [skip ci]"
+          git push
