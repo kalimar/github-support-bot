@@ -1,6 +1,6 @@
 # GitHub Support Bot - Customer Service Automation
 
-> **Portfolio Project**: Demonstrating automated customer support architecture and DevOps expertise with GitHub's native tooling.
+> **Portfolio Project**: Demonstrating automated customer support architecture and DevOps expertise with GitHub's native tooling. Also experimenting with agentic coding.
 
 ---
 
