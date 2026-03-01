@@ -1,6 +1,6 @@
 # What it does: Classifies new issues by content, applies a label, and posts a matching response template.
 # When it runs: Immediately when an issue is opened by a non-bot actor.
-# Permissions: issues:write — to apply labels and post comments. No other access needed.
+# Permissions: issues:write (labels + comments), contents:read (checkout).
 
 name: Issue Triage
 
@@ -13,15 +13,20 @@ jobs:
     name: Classify and respond
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
+    timeout-minutes: 5
+    concurrency:
+      group: triage-${{ github.event.issue.number }}
+      cancel-in-progress: false
     permissions:
       issues: write
+      contents: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: '20'
 
@@ -33,7 +38,7 @@ jobs:
         run: node src/classify.js
 
       - name: Apply label
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         env:
           LABEL: ${{ steps.classify.outputs.label }}
         with:
@@ -58,7 +63,7 @@ jobs:
 
       - name: Check for existing bot comment
         id: check-comment
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |
             const { data: comments } = await github.rest.issues.listComments({
@@ -73,7 +78,7 @@ jobs:
 
       - name: Post response
         if: steps.check-comment.outputs.already_commented != 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         env:
           LABEL: ${{ steps.classify.outputs.label }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

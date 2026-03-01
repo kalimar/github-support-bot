@@ -6,6 +6,21 @@ Standards and constraints that govern how this project is built and maintained. 
 
 ## 1. Workflow Rules
 
+### 1.0 Pre-flight checklist
+Complete this before writing any new workflow file:
+
+- [ ] Read sections 1.1–1.6 of these rules
+- [ ] Review the [GitHub Actions security hardening guide](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
+- [ ] Permissions declared at job level, including every scope the job actually needs
+- [ ] All actions pinned to full commit SHAs — format: `uses: action@<sha>  # vX`
+- [ ] Untrusted input (issue title/body, PR content) passed via `env:` — not interpolated inline
+- [ ] `timeout-minutes` set to the shortest realistic upper bound
+- [ ] `concurrency` group defined if triggered by issue or PR events
+- [ ] Bot guard (`if: github.actor != 'github-actions[bot]'`) on any issue/PR-triggered job
+- [ ] Idempotency: steps that write (labels, comments) check before acting
+
+Automated enforcement: `actionlint` runs on every push/PR touching `.github/workflows/` and will fail the build on violations.
+
 ### 1.1 Trigger scope
 - All issue-triggered workflows must use `issues: [opened]` as the sole trigger unless there is an explicit documented reason to add more event types
 - Workflows must never trigger on their own bot comments (use `if: github.actor != 'github-actions[bot]'` guards)
@@ -13,16 +28,28 @@ Standards and constraints that govern how this project is built and maintained. 
 
 ### 1.2 Permissions
 - Every workflow file must declare explicit `permissions:` at the job level, not the workflow level
+- Specifying any permission at job level sets all others to `none` — always include every permission the job actually needs (e.g. `contents: read` for checkout + `issues: write` for API calls)
 - Use the minimum permissions required: prefer `issues: write` over broader scopes
 - Never use `contents: write` in a workflow unless it is specifically writing to the repo (e.g. dashboard data commit)
 - `GITHUB_TOKEN` is the only allowed authentication method — no PATs, no third-party tokens
 
-### 1.3 Secrets and configuration
+### 1.3 Security hardening
+- Pin all actions to a full commit SHA, not a mutable version tag — tags can be moved by the action author
+  - Format: `uses: actions/checkout@<sha>  # v4`
+  - Ref: [GitHub Security Hardening docs](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#using-third-party-actions)
+- Always pass untrusted input (issue titles, bodies, PR content) via `env:` variables to `run:` steps — never interpolate `${{ github.event.issue.title }}` directly into a shell command or script
+- When reviewing any new workflow, check it against the [GitHub Actions security hardening guide](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions) before merging
+
+### 1.4 Reliability
+- Every job must set `timeout-minutes` — the default (6 hours) is never appropriate for automation workflows; use the shortest realistic upper bound (e.g. `5` for triage)
+- Use `concurrency` groups to prevent duplicate runs from webhook retries — group by issue or PR number with `cancel-in-progress: false` so queued runs still execute
+
+### 1.5 Secrets and configuration
 - No hardcoded strings that vary by environment (repo names, usernames, thresholds) — use workflow `env:` blocks or a config file
 - Label definitions live in `.github/labels.yml` — this is the single source of truth
 - Response templates live in `.github/responses/` — one file per issue type
 
-### 1.4 Idempotency
+### 1.6 Idempotency
 - Every workflow step must be safe to re-run without side effects
 - Before posting a comment, check if the bot has already commented on that issue
 - Before applying a label, check if it is already applied

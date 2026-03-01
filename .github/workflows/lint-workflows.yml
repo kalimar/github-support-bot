@@ -1,0 +1,30 @@
+# What it does: Runs actionlint on all workflow files to catch security issues, permission errors, and syntax problems.
+# When it runs: On push or PR when any file in .github/workflows/ changes.
+# Permissions: contents:read only — this workflow never writes anything.
+
+name: Lint Workflows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Run actionlint
+        uses: rhysd/actionlint@393031adb9afb225ee52ae2ccd7a5af5525e03e8  # v1.7.11
+        with:
+          fail-on-error: true
