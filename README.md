@@ -1,8 +1,3 @@
-Good point! Let me revise the README to be more portfolio-focused since it'll be linked from your homepage.
-
-## File 1: README.md (Revised)
-
-```markdown
 # GitHub Support Bot - Customer Service Automation
 
 > **Portfolio Project**: Demonstrating automated customer support architecture and DevOps expertise with GitHub's native tooling.
