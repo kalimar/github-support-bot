@@ -1,14 +1,17 @@
 {
-  "generated_at": "2026-03-01T03:21:55.391Z",
+  "generated_at": "2026-03-01T04:13:47.016Z",
   "period_days": 30,
   "summary": {
-    "total_open": 0,
+    "total_open": 2,
     "closed_30d": 0,
     "auto_resolved_30d": 0,
     "escalated_30d": 0,
     "sla_breached": 0
   },
-  "avg_first_response_hours": null,
-  "label_distribution": {},
+  "avg_first_response_hours": 0,
+  "label_distribution": {
+    "question": 1,
+    "bug": 1
+  },
   "sla_breached_issues": []
 }
