@@ -8,7 +8,7 @@
 
 This project showcases how to build scalable, automated customer support systems using GitHub Actions, API integration, and intelligent issue routing. Built as part of my application for the **Customer Service Architect** role at GitHub.
 
-**Live Dashboard**: [View Metrics →](https://kalimar-USERNAME.github.io/github-support-bot/) _(coming soon)_
+**Live Dashboard**: [View Metrics →](https://kalimar.github.io/github-support-bot/)
 
 ---
 
@@ -107,7 +107,7 @@ _(Will be updated as project progresses)_
 Built by **[Your Name]**  
 Portfolio: [kalimar.github.io](https://kalimar.github.io)  
 LinkedIn: [https://www.linkedin.com/in/kalimarmaia/]  
-GitHub: [@kalimar](https://github.com/kalimars)
+GitHub: [@kalimar](https://github.com/kalimar)
 
 ---
 
