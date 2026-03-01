@@ -1,0 +1,12 @@
+{
+  "name": "github-support-bot",
+  "version": "1.0.0",
+  "description": "Automated GitHub issue triage and response bot",
+  "type": "module",
+  "scripts": {
+    "test": "node --test src/__tests__/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

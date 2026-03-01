@@ -1,0 +1,32 @@
+# Label taxonomy — single source of truth for all labels used by workflows.
+# To add a label: add it here, then run the sync-labels workflow.
+# Color values are hex without the leading #.
+
+labels:
+  - name: bug
+    color: d73a4a
+    description: Something isn't working as expected
+
+  - name: feature
+    color: a2eeef
+    description: New functionality or enhancement request
+
+  - name: question
+    color: d876e3
+    description: Request for information or clarification
+
+  - name: documentation
+    color: 0075ca
+    description: Improvements or corrections to documentation
+
+  - name: triage
+    color: e4e669
+    description: Awaiting classification by a team member
+
+  - name: needs-human-review
+    color: e99695
+    description: Requires manual review — automation could not handle this
+
+  - name: duplicate
+    color: cfd3d7
+    description: This issue already exists in another thread
