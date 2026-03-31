@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-30T07:14:46.537Z",
+  "generated_at": "2026-03-31T07:00:58.039Z",
   "period_days": 30,
   "summary": {
     "total_open": 2,
@@ -8,7 +8,7 @@
     "escalated_30d": 0,
     "sla_breached": 0
   },
-  "avg_first_response_hours": 0,
+  "avg_first_response_hours": null,
   "label_distribution": {
     "question": 1,
     "bug": 1
